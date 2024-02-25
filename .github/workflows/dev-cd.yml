@@ -42,7 +42,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile-dev
-          push: trueg
+          push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DEV_REPONAME }}
 
   CD:
