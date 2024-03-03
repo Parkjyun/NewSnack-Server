@@ -126,3 +126,4 @@ gradle-app.setting
 application-secret.properties
 application-local.yml
 application-dev.yml
+src/main/resources/log4j2/
