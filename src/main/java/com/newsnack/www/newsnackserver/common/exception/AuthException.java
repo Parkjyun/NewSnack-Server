@@ -4,12 +4,12 @@ import com.newsnack.www.newsnackserver.common.code.failure.FailureCode;
 import lombok.Getter;
 
 @Getter
-public class NewSnackException extends RuntimeException{
+public class AuthException extends RuntimeException{
 
     private final FailureCode failureCode;
 
-    public NewSnackException(FailureCode failureCode) {
-        super(failureCode.getMessage());
+    public AuthException(FailureCode failureCode) {
+        super("[AuthException] : " + failureCode.getMessage());
         this.failureCode = failureCode;
     }
 
