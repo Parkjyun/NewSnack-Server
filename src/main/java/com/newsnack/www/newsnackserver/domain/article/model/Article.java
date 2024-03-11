@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Getter
@@ -28,4 +29,7 @@ public class Article extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private LocationCategory locationCategory;
+
+    @Formula("(select count(*) from article_heart where article_heart.article_id = id)")
+    private int heartCount;
 }
