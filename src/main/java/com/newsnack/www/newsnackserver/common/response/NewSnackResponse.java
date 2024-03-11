@@ -1,6 +1,8 @@
 package com.newsnack.www.newsnackserver.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.newsnack.www.newsnackserver.common.code.failure.FailureCode;
+import com.newsnack.www.newsnackserver.common.code.success.SuccessCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,15 +18,15 @@ public class NewSnackResponse<T> {
     private T data;
 
     public static NewSnackResponse<?> success(SuccessCode successCode) {
-        return new NewSnackResponse<>(successCode.getHttpStatusCode(), successCode.getMesssage());
+        return new NewSnackResponse<>(successCode.getHttpStatus().value(), successCode.getMessage());
     }
 
     public static <T>NewSnackResponse<T> success(SuccessCode successCode, T data) {
-        return new NewSnackResponse<>(successCode.getHttpStatusCode(), successCode.getMesssage(), data);
+        return new NewSnackResponse<>(successCode.getHttpStatus().value(), successCode.getMessage(), data);
     }
 
-    public static NewSnackResponse<?> error(ErrorCode errorCode) {
-        return new NewSnackResponse<>(errorCode.getHttpStatusCode(), errorCode.getMessage());
+    public static NewSnackResponse<?> error(FailureCode failureCode) {
+        return new NewSnackResponse<>(failureCode.getHttpStatus().value(), failureCode.getMessage());
     }
 
 
