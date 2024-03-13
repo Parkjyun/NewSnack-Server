@@ -24,7 +24,7 @@ public class MemberIdArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         final Principal principal = webRequest.getUserPrincipal();
         if (principal == null) {
-            throw new MemberException(MemberFailureCode.MEMBER_NOT_FOUND);
+            return null;
         }
         return Long.valueOf(principal.getName());
     }
