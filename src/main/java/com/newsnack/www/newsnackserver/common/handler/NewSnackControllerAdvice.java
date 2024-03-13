@@ -45,7 +45,7 @@ public class NewSnackControllerAdvice {
     }
 
     @ExceptionHandler(MemberException.class)
-    public ResponseEntity<NewSnackResponse> handleMemberException(MemberException e) {
+    public ResponseEntity<NewSnackResponse<?>> handleMemberException(MemberException e) {
         log.info("handleMemberException() in NewSnackControllerAdvice throw MemberException : {}", e.getMessage());
         return ResponseEntity.status(e.getHttpStatusCode())
                 .body(NewSnackResponse.error(e.getFailureCode()));
