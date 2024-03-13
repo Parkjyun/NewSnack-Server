@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,5 +61,9 @@ public class ArticleService {
         boolean isLiked = articleHeartJpaRepository.existsByArticleIdAndMemberId(articleId, memberId);
         return ArticleIndividualResponse.of(article, isLiked);
     }
+
+    public List<ArticleMainPageResponse> getMainArticles() {
+        LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
+        return articleRepository.findTop5ByCreatedAtAfterOrderByHeartCountDescIdDesc(oneWeekAgo).stream().map(ArticleMainPageResponse::from).collect(Collectors.toList());
     }
 }
