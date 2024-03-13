@@ -22,8 +22,14 @@ public class MemberIdArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        MemberId memberId = parameter.getParameterAnnotation(MemberId.class);
+        boolean forSecuredApi = memberId.isForSecuredApi();
+
         final Principal principal = webRequest.getUserPrincipal();
         if (principal == null) {
+            if (forSecuredApi) {
+                throw new MemberException(MemberFailureCode.MEMBER_NOT_FOUND);
+            }
             return null;
         }
         return Long.valueOf(principal.getName());
