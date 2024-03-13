@@ -11,7 +11,12 @@ public enum ArticleFailureCode implements FailureCode{
     /**
      * 400 BAD REQUEST
      */
-    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다");
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다"),
+
+    /**
+     * 404 NOT FOUND
+     */
+    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "뉴스를 찾을 수 없습니다");
 
     private final HttpStatus httpStatus;
     private final String message;

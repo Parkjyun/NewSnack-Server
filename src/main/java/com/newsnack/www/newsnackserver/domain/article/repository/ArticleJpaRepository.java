@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface ArticleJpaRepository extends JpaRepository<Article, Long> {
 
     @Query("SELECT a from Article a order by a.id desc")
@@ -24,5 +27,7 @@ public interface ArticleJpaRepository extends JpaRepository<Article, Long> {
 
     @Query("SELECT a from Article a where a.locationCategory = :locationCategory order by a.heartCount desc, a.id desc")
     Page<Article> findAllByLocationCategoryOrderByHeartCountDescAndIdDesc(LocationCategory locationCategory, Pageable pageable);
+
+    List<Article> findTop5ByCreatedAtAfterOrderByHeartCountDescIdDesc(LocalDateTime oneWeekAgo);
 
 }

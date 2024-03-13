@@ -1,5 +1,8 @@
 package com.newsnack.www.newsnackserver.controller;
 
+import com.newsnack.www.newsnackserver.annotation.MemberId;
+import com.newsnack.www.newsnackserver.dto.response.ArticleIndividualResponse;
+import com.newsnack.www.newsnackserver.dto.response.ArticleMainPageResponse;
 import com.newsnack.www.newsnackserver.dto.response.ArticleResponse;
 import com.newsnack.www.newsnackserver.service.ArticleService;
 import com.newsnack.www.newsnackserver.common.code.failure.ArticleFailureCode;
@@ -10,10 +13,7 @@ import com.newsnack.www.newsnackserver.domain.article.model.LocationCategory;
 import com.newsnack.www.newsnackserver.domain.article.model.SearchOrder;
 import com.newsnack.www.newsnackserver.domain.article.model.SectionCategory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +33,15 @@ public class ArticleController {
             throw new NewSnackException(ArticleFailureCode.INVALID_PARAMETER);
         }
         return NewSnackResponse.success(ArticleSuccessCode.GET_ARTICLES_SUCCESS, articleService.getArticles(order, sectionCategory, locationCategory, page));
+    }
+
+    @GetMapping("/{articleId}")
+    public NewSnackResponse<ArticleIndividualResponse> getArticle(@PathVariable Long articleId, @MemberId Long memberId) {
+        return NewSnackResponse.success(ArticleSuccessCode.GET_ARTICLES_SUCCESS, articleService.getArticle(articleId, memberId));
+    }
+
+    @GetMapping("/main")
+    public NewSnackResponse<List<ArticleMainPageResponse>> getMainArticles() {
+        return NewSnackResponse.success(ArticleSuccessCode.GET_ARTICLES_SUCCESS, articleService.getMainArticles());
     }
 }
