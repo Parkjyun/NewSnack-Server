@@ -33,24 +33,25 @@ public class ArticleService {
 
         if(order.equals(SearchOrder.RECENT)) {
             if (sectionCategory != null) {
-                return articleRepository.findAllBySectionCategoryOrderByIdDesc(sectionCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::of).collect(Collectors.toList());
+                return articleRepository.findAllBySectionCategoryOrderByIdDesc(sectionCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::from).collect(Collectors.toList());
             }
             if (locationCategory != null) {
-                return articleRepository.findAllByLocationCategoryOrderByIdDesc(locationCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::of).collect(Collectors.toList());
+                return articleRepository.findAllByLocationCategoryOrderByIdDesc(locationCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::from).collect(Collectors.toList());
             }
-           return articleRepository.findAllOrderByIdDesc(PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::of).collect(Collectors.toList());
+           return articleRepository.findAllOrderByIdDesc(PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::from).collect(Collectors.toList());
         }
        if(order.equals(SearchOrder.POPULAR)) {
            if (sectionCategory != null) {
-               return articleRepository.findAllBySectionCategoryOrderByHeartCountDescAndIdDesc(sectionCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::of).collect(Collectors.toList());
+               return articleRepository.findAllBySectionCategoryOrderByHeartCountDescAndIdDesc(sectionCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::from).collect(Collectors.toList());
            }
            if (locationCategory != null) {
-               return articleRepository.findAllByLocationCategoryOrderByHeartCountDescAndIdDesc(locationCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::of).collect(Collectors.toList());
+               return articleRepository.findAllByLocationCategoryOrderByHeartCountDescAndIdDesc(locationCategory, PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::from).collect(Collectors.toList());
            }
-            return articleRepository.findAllOrderByPopularAndIdDesc(PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::of).collect(Collectors.toList());
+            return articleRepository.findAllOrderByPopularAndIdDesc(PageRequest.of(page, PAGE_SIZE)).getContent().stream().map(ArticleResponse::from).collect(Collectors.toList());
         } else {
             return null;
         }
+    }
 
     public ArticleIndividualResponse getArticle(Long articleId, Long memberId) {//현재 로그인 x 기준임
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleException(ArticleFailureCode.ARTICLE_NOT_FOUND));
