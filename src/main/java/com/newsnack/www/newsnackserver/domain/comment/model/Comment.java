@@ -5,6 +5,7 @@ import com.newsnack.www.newsnackserver.domain.commom.BaseTimeEntity;
 import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,11 @@ public class Comment extends BaseTimeEntity {
     private Member member;
 
     private String content;
+
+    @Builder
+    public Comment(Article article, Member member, String content) {
+        this.article = article;
+        this.member = member;
+        this.content = content;
+    }
 }
