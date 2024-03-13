@@ -1,9 +1,6 @@
 package com.newsnack.www.newsnackserver.domain.comment.repository;
 
-
-import com.newsnack.www.newsnackserver.domain.article.model.SearchOrder;
 import com.newsnack.www.newsnackserver.domain.comment.model.Comment;
-import com.newsnack.www.newsnackserver.dto.response.CommentResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
