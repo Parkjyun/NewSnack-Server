@@ -30,4 +30,10 @@ public class CommentController {
         return NewSnackResponse.success(CommentSuccessCode.COMMENT_UPDATED);
     }
 
+    @DeleteMapping("/comments/{commentId}")
+    public NewSnackResponse<?> deleteComment(@PathVariable Long commentId, @MemberId Long memberId) {
+        commentService.deleteComment(commentId, memberId);
+        return NewSnackResponse.success(CommentSuccessCode.COMMENT_DELETED_SUCCESS);
+    }
+
 }

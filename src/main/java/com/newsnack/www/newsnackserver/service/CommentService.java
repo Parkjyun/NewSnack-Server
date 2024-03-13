@@ -1,6 +1,7 @@
 package com.newsnack.www.newsnackserver.service;
 
 import com.newsnack.www.newsnackserver.common.code.failure.ArticleFailureCode;
+import com.newsnack.www.newsnackserver.common.code.failure.CommentFailureCode;
 import com.newsnack.www.newsnackserver.common.code.failure.MemberFailureCode;
 import com.newsnack.www.newsnackserver.common.exception.NewSnackException;
 import com.newsnack.www.newsnackserver.domain.article.model.Article;
@@ -34,6 +35,16 @@ public class CommentService {
                 .build();
         commentJpaRepository.save(comment);
     }
+
+    @Transactional
+    public void deleteComment(Long commentId, Long memberId) {
+        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
+        if (!comment.getMember().getId().equals(memberId)) {
+            throw new NewSnackException(CommentFailureCode.DELETE_NOT_AUTHORIZED);
+        }
+        commentJpaRepository.delete(comment);
+    }
+
     @Transactional
     public void updateComment(Long commentId, CommentRequest commentRequest, Long memberId) {
         Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
