@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum CommentSuccessCode implements SuccessCode{
     /**
+     * 200 OK
+     **/
+    COMMENT_GET_SUCCESS(HttpStatus.OK, "댓글 조회 성공"),
+    /**
      * 201 Created
      **/
     COMMENT_CREATED(HttpStatus.CREATED, "댓글 작성 성공"),
