@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -27,6 +28,10 @@ public class NewSnackResponse<T> {
 
     public static NewSnackResponse<?> error(FailureCode failureCode) {
         return new NewSnackResponse<>(failureCode.getHttpStatus().value(), failureCode.getMessage());
+    }
+
+    public static NewSnackResponse<?> error(HttpStatusCode httpStatusCode, String message) {
+        return new NewSnackResponse<>(httpStatusCode.value(), message);
     }
 
 
