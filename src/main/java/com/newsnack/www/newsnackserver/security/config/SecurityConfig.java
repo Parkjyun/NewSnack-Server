@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(Constants.AUTH_WHITELIST).permitAll()//whitelist는 인증없이
-                                .requestMatchers("/v1/articles/**", "/v1/articles").permitAll()
+                                .requestMatchers("/v1/articles/{articleId}", "/v1/articles", "/v1/articles/main").permitAll()
                                 .anyRequest().authenticated())//인증 필요
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
