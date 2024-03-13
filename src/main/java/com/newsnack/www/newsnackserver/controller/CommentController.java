@@ -23,5 +23,11 @@ public class CommentController {
         return NewSnackResponse.success(CommentSuccessCode.COMMENT_CREATED);
     }
 
+    @PatchMapping("/comments/{commentId}")
+    public NewSnackResponse<?> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequest commentRequest,
+                                             @MemberId Long memberId) {
+        commentService.updateComment(commentId, commentRequest, memberId);
+        return NewSnackResponse.success(CommentSuccessCode.COMMENT_UPDATED);
+    }
 
 }

@@ -34,4 +34,12 @@ public class CommentService {
                 .build();
         commentJpaRepository.save(comment);
     }
+    @Transactional
+    public void updateComment(Long commentId, CommentRequest commentRequest, Long memberId) {
+        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
+        if (!comment.getMember().getId().equals(memberId)) {
+            throw new NewSnackException(CommentFailureCode.UPDATE_NOT_AUTHORIZED);
+        }
+        comment.updateContent(commentRequest.content());
+    }
 }
