@@ -36,7 +36,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public NewSnackResponse<ArticleIndividualResponse> getArticle(@PathVariable Long articleId, @MemberId Long memberId) {
+    public NewSnackResponse<ArticleIndividualResponse> getArticle(@PathVariable Long articleId, @MemberId(isForSecuredApi = false) Long memberId) {
         return NewSnackResponse.success(ArticleSuccessCode.GET_ARTICLES_SUCCESS, articleService.getArticle(articleId, memberId));
     }
 

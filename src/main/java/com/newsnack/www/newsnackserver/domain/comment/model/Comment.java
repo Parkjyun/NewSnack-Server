@@ -1,12 +1,18 @@
 package com.newsnack.www.newsnackserver.domain.comment.model;
 
 import com.newsnack.www.newsnackserver.domain.article.model.Article;
+import com.newsnack.www.newsnackserver.domain.commentheart.model.CommentHeart;
 import com.newsnack.www.newsnackserver.domain.commom.BaseTimeEntity;
 import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,5 +31,22 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)//orphaneRemoval: commentHearts.remove만 해도 DB에서 삭제됨, cascade, orphanRemoval: 둘다 부모 삭제시 자식 모두 삭제
+    private List<CommentHeart> commentHearts = new ArrayList<>();
+
     private String content;
+
+    @Formula("(select count(*) from comment_heart where comment_heart.comment_id = id)")
+    private int heartCount;
+
+    @Builder
+    public Comment(Article article, Member member, String content) {
+        this.article = article;
+        this.member = member;
+        this.content = content;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
