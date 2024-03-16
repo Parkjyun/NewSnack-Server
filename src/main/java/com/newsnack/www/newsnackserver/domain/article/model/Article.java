@@ -30,6 +30,13 @@ public class Article extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private LocationCategory locationCategory;
 
-    @Formula("(select count(*) from article_heart where article_heart.article_id = id)")
     private int heartCount;
+
+    public void increaseHeartCount() {
+        this.heartCount++;
+    }
+
+    public void decreaseHeartCount() {
+        this.heartCount--;
+    }
 }
