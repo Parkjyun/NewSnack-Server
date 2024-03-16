@@ -5,6 +5,7 @@ import com.newsnack.www.newsnackserver.domain.commom.BaseTimeEntity;
 import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,10 @@ public class CommentHeart extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Builder
+    public CommentHeart(Comment comment, Member member) {
+        this.comment = comment;
+        this.member = member;
+    }
 }
