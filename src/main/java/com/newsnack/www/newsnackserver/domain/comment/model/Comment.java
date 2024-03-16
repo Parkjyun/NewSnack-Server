@@ -36,7 +36,6 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
-    @Formula("(select count(*) from comment_heart where comment_heart.comment_id = id)")
     private int heartCount;
 
     @Builder
@@ -44,6 +43,14 @@ public class Comment extends BaseTimeEntity {
         this.article = article;
         this.member = member;
         this.content = content;
+    }
+
+    public void increaseHeartCount() {
+        this.heartCount++;
+    }
+
+    public void decreaseHeartCount() {
+        this.heartCount--;
     }
 
     public void updateContent(String content) {
