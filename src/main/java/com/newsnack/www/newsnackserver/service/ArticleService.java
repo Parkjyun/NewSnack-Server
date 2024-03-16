@@ -1,9 +1,7 @@
 package com.newsnack.www.newsnackserver.service;
 
 import com.newsnack.www.newsnackserver.common.code.failure.ArticleFailureCode;
-import com.newsnack.www.newsnackserver.common.code.failure.MemberFailureCode;
 import com.newsnack.www.newsnackserver.common.exception.ArticleException;
-import com.newsnack.www.newsnackserver.common.exception.MemberException;
 import com.newsnack.www.newsnackserver.domain.article.model.Article;
 import com.newsnack.www.newsnackserver.domain.articleheart.model.ArticleHeart;
 import com.newsnack.www.newsnackserver.domain.articleheart.repository.ArticleHeartJpaRepository;
