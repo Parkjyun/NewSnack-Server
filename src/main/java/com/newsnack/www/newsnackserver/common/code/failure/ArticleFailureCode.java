@@ -16,7 +16,13 @@ public enum ArticleFailureCode implements FailureCode{
     /**
      * 404 NOT FOUND
      */
-    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "뉴스를 찾을 수 없습니다");
+    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "뉴스를 찾을 수 없습니다"),
+    ARTICLE_HEART_NOT_FOUND(HttpStatus.NOT_FOUND, "기사 좋아요가 없습니다"),
+
+    /**
+     * 409 CONFLICT
+     */
+    ARTICLE_HEART_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 좋아요한 게시물입니다");
 
     private final HttpStatus httpStatus;
     private final String message;
