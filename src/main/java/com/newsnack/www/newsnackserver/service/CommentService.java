@@ -48,7 +48,7 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId, Long memberId) {
-        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
+        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentFailureCode.COMMENT_NOT_FOUND));
         if (!comment.getMember().getId().equals(memberId)) {
             throw new NewSnackException(CommentFailureCode.DELETE_NOT_AUTHORIZED);
         }
@@ -57,7 +57,7 @@ public class CommentService {
 
     @Transactional
     public void updateComment(Long commentId, CommentRequest commentRequest, Long memberId) {
-        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
+        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentFailureCode.COMMENT_NOT_FOUND));
         if (!comment.getMember().getId().equals(memberId)) {
             throw new NewSnackException(CommentFailureCode.UPDATE_NOT_AUTHORIZED);
         }
