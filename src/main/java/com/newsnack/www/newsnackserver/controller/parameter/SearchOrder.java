@@ -1,4 +1,4 @@
-package com.newsnack.www.newsnackserver.domain.article.model;
+package com.newsnack.www.newsnackserver.controller.parameter;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
