@@ -4,6 +4,7 @@ import com.newsnack.www.newsnackserver.domain.article.model.Article;
 import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class ArticleHeart {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @Builder
+    public ArticleHeart(Member member, Article article) {
+        this.member = member;
+        this.article = article;
+    }
 }
