@@ -1,9 +1,6 @@
 package com.newsnack.www.newsnackserver.common.handler;
 
-import com.newsnack.www.newsnackserver.common.exception.ArticleException;
-import com.newsnack.www.newsnackserver.common.exception.AuthException;
-import com.newsnack.www.newsnackserver.common.exception.MemberException;
-import com.newsnack.www.newsnackserver.common.exception.NewSnackException;
+import com.newsnack.www.newsnackserver.common.exception.*;
 import com.newsnack.www.newsnackserver.common.response.NewSnackResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,6 +52,13 @@ public class NewSnackControllerAdvice {
     @ExceptionHandler(ArticleException.class)
     public ResponseEntity<NewSnackResponse<?>> handleMemberException(ArticleException e) {
         log.info("handleMemberException() in NewSnackControllerAdvice throw MemberException : {}", e.getMessage());
+        return ResponseEntity.status(e.getHttpStatusCode())
+                .body(NewSnackResponse.error(e.getFailureCode()));
+    }
+
+    @ExceptionHandler(CommentException.class)
+    public ResponseEntity<NewSnackResponse<?>> handleCommentException(CommentException e) {
+        log.info("handleCommentException() in NewSnackControllerAdvice throw CommentException : {}", e.getMessage());
         return ResponseEntity.status(e.getHttpStatusCode())
                 .body(NewSnackResponse.error(e.getFailureCode()));
     }
