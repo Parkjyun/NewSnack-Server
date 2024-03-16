@@ -3,12 +3,17 @@ package com.newsnack.www.newsnackserver.service;
 import com.newsnack.www.newsnackserver.common.code.failure.ArticleFailureCode;
 import com.newsnack.www.newsnackserver.common.code.failure.CommentFailureCode;
 import com.newsnack.www.newsnackserver.common.code.failure.MemberFailureCode;
+import com.newsnack.www.newsnackserver.common.exception.ArticleException;
+import com.newsnack.www.newsnackserver.common.exception.CommentException;
+import com.newsnack.www.newsnackserver.common.exception.MemberException;
 import com.newsnack.www.newsnackserver.common.exception.NewSnackException;
 import com.newsnack.www.newsnackserver.domain.article.model.Article;
-import com.newsnack.www.newsnackserver.domain.article.model.SearchOrder;
+import com.newsnack.www.newsnackserver.controller.parameter.SearchOrder;
 import com.newsnack.www.newsnackserver.domain.article.repository.ArticleRepository;
 import com.newsnack.www.newsnackserver.domain.comment.model.Comment;
 import com.newsnack.www.newsnackserver.domain.comment.repository.CommentJpaRepository;
+import com.newsnack.www.newsnackserver.domain.commentheart.model.CommentHeart;
+import com.newsnack.www.newsnackserver.domain.commentheart.repository.CommentHeartJpaRepository;
 import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import com.newsnack.www.newsnackserver.domain.member.repository.MemberJpaRepository;
 import com.newsnack.www.newsnackserver.dto.CommentRequest;
@@ -26,12 +31,13 @@ public class CommentService {
     private final CommentJpaRepository commentJpaRepository;
     private final ArticleRepository articleRepository;
     private final MemberJpaRepository memberJpaRepository;
+    private final CommentHeartJpaRepository commentHeartJpaRepository;
 
     @Transactional
     public void createComment(Long articleId, CommentRequest commentRequest, Long memberId) {
 
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new NewSnackException(ArticleFailureCode.ARTICLE_NOT_FOUND));
-        Member member = memberJpaRepository.findById(memberId).orElseThrow(() -> new NewSnackException(MemberFailureCode.MEMBER_NOT_FOUND));
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleException(ArticleFailureCode.ARTICLE_NOT_FOUND));
+        Member member = memberJpaRepository.findById(memberId).orElseThrow(() -> new MemberException(MemberFailureCode.MEMBER_NOT_FOUND));
         Comment comment = Comment.builder()
                 .article(article)
                 .member(member)
@@ -42,7 +48,7 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId, Long memberId) {
-        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
+        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentFailureCode.COMMENT_NOT_FOUND));
         if (!comment.getMember().getId().equals(memberId)) {
             throw new NewSnackException(CommentFailureCode.DELETE_NOT_AUTHORIZED);
         }
@@ -51,7 +57,7 @@ public class CommentService {
 
     @Transactional
     public void updateComment(Long commentId, CommentRequest commentRequest, Long memberId) {
-        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new NewSnackException(CommentFailureCode.COMMENT_NOT_FOUND));
+        Comment comment = commentJpaRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentFailureCode.COMMENT_NOT_FOUND));
         if (!comment.getMember().getId().equals(memberId)) {
             throw new NewSnackException(CommentFailureCode.UPDATE_NOT_AUTHORIZED);
         }
@@ -84,5 +90,35 @@ public class CommentService {
 
     boolean isMyComment(Comment comment, Long memberId) {
         return comment.getMember().getId().equals(memberId);
+    }
+
+    @Transactional
+    public void likeComment(Long commentId, Long memberId) {
+        Comment comment = commentJpaRepository.getReferenceById(commentId);
+        Member member = memberJpaRepository.getReferenceById(memberId);
+        commentHeartJpaRepository.findByCommentAndMember(comment, member).ifPresentOrElse(
+                (commentHeart) -> {
+                    throw new CommentException(CommentFailureCode.COMMENT_HEART_ALREADY_EXISTS);
+                },
+                () -> {
+                    commentHeartJpaRepository.save(CommentHeart.builder().member(member).comment(comment).build());
+                    comment.increaseHeartCount();
+                }
+        );
+    }
+
+    @Transactional
+    public void cancelCommentLike(Long commentId, Long memberId) {
+        Comment comment = commentJpaRepository.getReferenceById(commentId);
+        Member member = memberJpaRepository.getReferenceById(memberId);
+        commentHeartJpaRepository.findByCommentAndMember(comment, member).ifPresentOrElse(
+                (commentHeart) -> {
+                    commentHeartJpaRepository.delete(commentHeart);
+                    comment.decreaseHeartCount();
+                },
+                () -> {
+                    throw new CommentException(CommentFailureCode.COMMENT_LIKE_NOT_FOUND);
+                }
+        );
     }
 }

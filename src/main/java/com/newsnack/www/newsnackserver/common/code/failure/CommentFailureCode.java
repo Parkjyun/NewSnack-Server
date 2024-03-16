@@ -17,7 +17,12 @@ public enum CommentFailureCode implements FailureCode{
     /**
      * 404 Not Found
      **/
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다");
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다"),
+    COMMENT_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글 좋아요가 없습니다."),
+    /**
+     * 409 Conflict
+     **/
+    COMMENT_HEART_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 좋아요한 댓글입니다");
 
     private final HttpStatus httpStatus;
     private final String message;

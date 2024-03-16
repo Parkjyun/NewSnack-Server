@@ -4,17 +4,15 @@ import com.newsnack.www.newsnackserver.common.code.failure.FailureCode;
 import lombok.Getter;
 
 @Getter
-public class ArticleException extends RuntimeException{
-
+public class CommentException extends RuntimeException {
     private final FailureCode failureCode;
 
-    public ArticleException(FailureCode failureCode) {
-        super("[ArticleException] : " + failureCode.getMessage());
+    public CommentException(FailureCode failureCode) {
+        super("[CommentException] : " + failureCode.getMessage());
         this.failureCode = failureCode;
     }
 
     public int getHttpStatusCode() {
         return failureCode.getHttpStatus().value();
-
     }
 }

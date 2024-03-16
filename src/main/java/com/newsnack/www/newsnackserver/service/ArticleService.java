@@ -3,12 +3,15 @@ package com.newsnack.www.newsnackserver.service;
 import com.newsnack.www.newsnackserver.common.code.failure.ArticleFailureCode;
 import com.newsnack.www.newsnackserver.common.exception.ArticleException;
 import com.newsnack.www.newsnackserver.domain.article.model.Article;
+import com.newsnack.www.newsnackserver.domain.articleheart.model.ArticleHeart;
 import com.newsnack.www.newsnackserver.domain.articleheart.repository.ArticleHeartJpaRepository;
+import com.newsnack.www.newsnackserver.domain.member.model.Member;
+import com.newsnack.www.newsnackserver.domain.member.repository.MemberJpaRepository;
 import com.newsnack.www.newsnackserver.dto.response.ArticleIndividualResponse;
 import com.newsnack.www.newsnackserver.dto.response.ArticleMainPageResponse;
 import com.newsnack.www.newsnackserver.dto.response.ArticleResponse;
 import com.newsnack.www.newsnackserver.domain.article.model.LocationCategory;
-import com.newsnack.www.newsnackserver.domain.article.model.SearchOrder;
+import com.newsnack.www.newsnackserver.controller.parameter.SearchOrder;
 import com.newsnack.www.newsnackserver.domain.article.model.SectionCategory;
 import com.newsnack.www.newsnackserver.domain.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleHeartJpaRepository articleHeartJpaRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     public List<ArticleResponse> getArticles(SearchOrder order, SectionCategory sectionCategory, LocationCategory locationCategory, Integer page) {
 
@@ -67,4 +71,35 @@ public class ArticleService {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
         return articleRepository.findTop5ByCreatedAtAfterOrderByHeartCountDescIdDesc(oneWeekAgo).stream().map(ArticleMainPageResponse::from).collect(Collectors.toList());
     }
+
+    @Transactional
+    public void likeArticle(Long articleId, Long memberId) {
+        Article article = articleRepository.getReferenceById(articleId);
+        Member member = memberJpaRepository.getReferenceById(memberId);
+        articleHeartJpaRepository.findByArticleAndMember(article, member).ifPresentOrElse(
+                (articleHeart) -> {
+                    throw new ArticleException(ArticleFailureCode.ARTICLE_HEART_ALREADY_EXISTS);
+                },
+                () -> {
+                    articleHeartJpaRepository.save(ArticleHeart.builder().member(member).article(article).build());
+                    article.increaseHeartCount();
+                }
+        );
+    }
+
+    @Transactional
+    public void cancelArticleLike(Long articleId, Long memberId) {
+        Article article = articleRepository.getReferenceById(articleId);
+        Member member = memberJpaRepository.getReferenceById(memberId);
+        articleHeartJpaRepository.findByArticleAndMember(article, member).ifPresentOrElse(
+                (articleHeart) -> {
+                    articleHeartJpaRepository.delete(articleHeart);
+                    article.decreaseHeartCount();
+                },
+                () -> {
+                    throw new ArticleException(ArticleFailureCode.ARTICLE_HEART_NOT_FOUND);
+                }
+        );
+    }
 }
+
