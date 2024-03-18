@@ -1,10 +1,14 @@
 package com.newsnack.www.newsnackserver.domain.article.model;
 
+import com.newsnack.www.newsnackserver.domain.articleheart.model.ArticleHeart;
 import com.newsnack.www.newsnackserver.domain.commom.BaseTimeEntity;
+import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +33,9 @@ public class Article extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private LocationCategory locationCategory;
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleHeart> articleHearts;
+
     private int heartCount;
 
     public void increaseHeartCount() {
@@ -37,5 +44,13 @@ public class Article extends BaseTimeEntity {
 
     public void decreaseHeartCount() {
         this.heartCount--;
+    }
+
+    public boolean isLikedByMember(Member member) {
+        for (ArticleHeart articleHeart : articleHearts) {
+            if (articleHeart.getMember() == member)//동일한 transaction 내 같은 식별자 갖는 프록시는 == 동일 보장.
+                return true;
+        }
+        return false;
     }
 }
