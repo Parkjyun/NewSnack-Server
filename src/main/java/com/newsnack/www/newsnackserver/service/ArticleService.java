@@ -57,14 +57,15 @@ public class ArticleService {
         }
     }
 
-    public ArticleIndividualResponse getArticle(Long articleId, Long memberId) {//현재 로그인 x 기준임
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleException(ArticleFailureCode.ARTICLE_NOT_FOUND));
+    public ArticleIndividualResponse getArticle(Long articleId, Long memberId) {
         if (memberId == null) {
+            Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleException(ArticleFailureCode.ARTICLE_NOT_FOUND));
             boolean isLiked = false;
             return ArticleIndividualResponse.of(article, isLiked);
         }
-        boolean isLiked = articleHeartJpaRepository.existsByArticleIdAndMemberId(articleId, memberId);
-        return ArticleIndividualResponse.of(article, isLiked);
+        Article article = articleRepository.findArticleWithArticleHeartsByIdJPQL(articleId).orElseThrow(() -> new ArticleException(ArticleFailureCode.ARTICLE_NOT_FOUND));
+        Member member = memberJpaRepository.getReferenceById(memberId);//Id만 필요하니까 프록시로 받음
+        return ArticleIndividualResponse.of(article, article.isLikedByMember(member));
     }
 
     public List<ArticleMainPageResponse> getMainArticles() {
