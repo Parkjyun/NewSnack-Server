@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ArticleHeartJpaRepository extends JpaRepository<ArticleHeart, Long> {
-    boolean existsByArticleIdAndMemberId(Long articleId, Long memberId);
     Optional<ArticleHeart> findByArticleAndMember(Article article, Member member);
 }
