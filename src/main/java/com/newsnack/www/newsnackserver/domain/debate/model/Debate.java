@@ -1,7 +1,6 @@
 package com.newsnack.www.newsnackserver.domain.debate.model;
 
 import com.newsnack.www.newsnackserver.domain.article.model.Article;
-import com.newsnack.www.newsnackserver.domain.article.model.SectionCategory;
 import com.newsnack.www.newsnackserver.domain.commom.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,12 +18,11 @@ public class Debate extends BaseTimeEntity {
 
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private SectionCategory sectionCategory;
+    int upVoteCount;
+
+    int downVoteCount;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
-
-
 }
