@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,5 +27,9 @@ public class DebateService {
     public DebateIndividualResponse getDebate(Long debateId) {
         Debate debate = debateJpaRepository.findDebateWithArticleJPQL(debateId).orElseThrow(() -> new DebateException(DebateFailureCode.DEBATE_NOT_FOUND));
         return DebateIndividualResponse.from(debate);
+    }
+
+    public List<DebateMainPageResponse> getDebates() {
+        return debateJpaRepository.findAllDebateWithArticleOrderByCreatedAtDescJPQL().stream().map(DebateMainPageResponse::from).collect(Collectors.toList());
     }
 }
