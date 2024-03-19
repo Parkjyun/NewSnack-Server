@@ -4,6 +4,7 @@ import com.newsnack.www.newsnackserver.common.code.failure.DebateFailureCode;
 import com.newsnack.www.newsnackserver.common.exception.DebateException;
 import com.newsnack.www.newsnackserver.domain.debate.model.Debate;
 import com.newsnack.www.newsnackserver.domain.debate.repository.DebateJpaRepository;
+import com.newsnack.www.newsnackserver.dto.response.DebateIndividualResponse;
 import com.newsnack.www.newsnackserver.dto.response.DebateMainPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,10 @@ public class DebateService {
     public DebateMainPageResponse getMainDebate() {
         Debate debate = debateJpaRepository.findLatestDebateWithArticleJPQL().orElseThrow(() -> new DebateException(DebateFailureCode.DEBATE_NOT_FOUND));
         return DebateMainPageResponse.from(debate);
+    }
+
+    public DebateIndividualResponse getDebate(Long debateId) {
+        Debate debate = debateJpaRepository.findDebateWithArticleJPQL(debateId).orElseThrow(() -> new DebateException(DebateFailureCode.DEBATE_NOT_FOUND));
+        return DebateIndividualResponse.from(debate);
     }
 }

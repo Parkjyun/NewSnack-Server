@@ -10,4 +10,6 @@ public interface DebateJpaRepository extends JpaRepository<Debate, Long> {
     @Query(value = "SELECT d FROM Debate d join fetch d.article WHERE d.id = (SELECT MAX(d.id) FROM Debate d)")
     Optional<Debate> findLatestDebateWithArticleJPQL();
 
+    @Query(value = "SELECT d FROM Debate d join fetch d.article WHERE d.id = :debateId")
+    Optional<Debate> findDebateWithArticleJPQL(Long debateId);
 }
