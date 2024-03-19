@@ -20,6 +20,11 @@ public class DebateController {
 
     private final DebateService debateService;
 
+    @GetMapping
+    public NewSnackResponse<List<DebateMainPageResponse>> getDebates() {
+        return NewSnackResponse.success(DebateSuccessCode.GET_DEBATES_SUCCESS, debateService.getDebates());
+    }
+
     @GetMapping("/main")
     public NewSnackResponse<DebateMainPageResponse> getMainDebate() {
         return NewSnackResponse.success(DebateSuccessCode.GET_DEBATES_SUCCESS, debateService.getMainDebate());
