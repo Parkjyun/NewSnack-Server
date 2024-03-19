@@ -18,6 +18,8 @@ public class Debate extends BaseTimeEntity {
 
     private String title;
 
+    private String content;
+
     int upVoteCount;
 
     int downVoteCount;
