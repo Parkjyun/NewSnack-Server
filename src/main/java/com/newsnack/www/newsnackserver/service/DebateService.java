@@ -28,7 +28,7 @@ public class DebateService {
         return DebateMainPageResponse.from(debate);
     }
 
-    public DebateIndividualResponse getDebate(Long debateId, Long memberId) {//todo: 상세조회에서 투표여부 보내야함
+    public DebateIndividualResponse getDebate(Long debateId, Long memberId) {
         Debate debate = debateJpaRepository.findDebateWithArticleJPQL(debateId).orElseThrow(() -> new DebateException(DebateFailureCode.DEBATE_NOT_FOUND));
         if (memberId == null) {//access 없다면
             return DebateIndividualResponse.of(debate, null);
