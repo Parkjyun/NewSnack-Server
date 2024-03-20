@@ -27,4 +27,12 @@ public class Debate extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    public void upVote() {
+        this.upVoteCount++;
+    }
+
+    public void downVote() {
+        this.downVoteCount++;
+    }
 }
