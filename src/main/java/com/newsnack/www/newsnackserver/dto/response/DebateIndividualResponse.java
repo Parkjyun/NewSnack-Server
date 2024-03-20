@@ -5,10 +5,10 @@ import com.newsnack.www.newsnackserver.domain.debate.model.Debate;
 
 import java.time.LocalDateTime;
 
-public record DebateIndividualResponse (long debateId, String title, String content, int agreeCount, int disagreeCount, long articleId, String imageUrl,
+public record DebateIndividualResponse (long debateId, String title, String content, Boolean vote, int agreeCount, int disagreeCount, long articleId, String imageUrl,
                                         String articleTitle, SectionCategory sectionCategory, LocalDateTime articleCreatedAt) {
-    public static DebateIndividualResponse from(Debate debate) {
-        return new DebateIndividualResponse(debate.getId(), debate.getTitle(), debate.getContent(), debate.getUpVoteCount(), debate.getDownVoteCount(),
+    public static DebateIndividualResponse of(Debate debate, Boolean vote) {
+        return new DebateIndividualResponse(debate.getId(), debate.getTitle(), debate.getContent(), vote, debate.getUpVoteCount(), debate.getDownVoteCount(),
                 debate.getArticle().getId(), debate.getArticle().getImageUrl(), debate.getArticle().getTitle(), debate.getArticle().getSectionCategory(),
                 debate.getArticle().getCreatedAt());
     }
