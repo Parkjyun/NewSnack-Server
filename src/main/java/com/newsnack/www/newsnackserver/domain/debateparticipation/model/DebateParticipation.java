@@ -28,6 +28,10 @@ public class DebateParticipation {
 
     private String comment;
 
+    public void updateComment(String comment) {
+        this.comment = comment;
+    }
+
     public DebateParticipation(Debate debate, Member member, Boolean vote) {
         this.debate = debate;
         this.member = member;
