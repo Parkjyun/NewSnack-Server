@@ -42,6 +42,13 @@ public class NewSnackControllerAdvice {
                 .body(NewSnackResponse.error(e.getFailureCode()));
     }
 
+    @ExceptionHandler(DebateException.class)
+    public ResponseEntity<NewSnackResponse<?>> handleDebateException(DebateException e) {
+        log.info("handleDebateException() in NewSnackControllerAdvice throw DebateException : {}", e.getMessage());
+        return ResponseEntity.status(e.getHttpStatusCode())
+                .body(NewSnackResponse.error(e.getFailureCode()));
+    }
+
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<NewSnackResponse<?>> handleMemberException(MemberException e) {
         log.info("handleMemberException() in NewSnackControllerAdvice throw MemberException : {}", e.getMessage());
