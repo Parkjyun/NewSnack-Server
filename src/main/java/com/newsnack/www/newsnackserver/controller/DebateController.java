@@ -1,5 +1,6 @@
 package com.newsnack.www.newsnackserver.controller;
 
+import com.newsnack.www.newsnackserver.annotation.MemberId;
 import com.newsnack.www.newsnackserver.common.code.success.DebateSuccessCode;
 import com.newsnack.www.newsnackserver.common.response.NewSnackResponse;
 import com.newsnack.www.newsnackserver.dto.response.DebateIndividualResponse;
@@ -31,7 +32,7 @@ public class DebateController {
     }
 
     @GetMapping("/{debateId}")
-    public NewSnackResponse<DebateIndividualResponse> getDebate(@PathVariable Long debateId) {
-        return NewSnackResponse.success(DebateSuccessCode.GET_DEBATES_SUCCESS, debateService.getDebate(debateId));
+    public NewSnackResponse<DebateIndividualResponse> getDebate(@PathVariable Long debateId, @MemberId(isForSecuredApi = false) Long memberId) {
+        return NewSnackResponse.success(DebateSuccessCode.GET_DEBATES_SUCCESS, debateService.getDebate(debateId, memberId));
     }
 }
