@@ -28,4 +28,10 @@ public class DebateParticipation {
 
     private String comment;
 
+    public DebateParticipation(Debate debate, Member member, Boolean vote) {
+        this.debate = debate;
+        this.member = member;
+        this.vote = vote;
+    }
+
 }
