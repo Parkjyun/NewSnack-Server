@@ -7,6 +7,7 @@ import com.newsnack.www.newsnackserver.common.response.NewSnackResponse;
 import com.newsnack.www.newsnackserver.controller.parameter.SearchOrder;
 import com.newsnack.www.newsnackserver.dto.request.DebateParticipationRequest;
 import com.newsnack.www.newsnackserver.dto.request.DebateVoteRequest;
+import com.newsnack.www.newsnackserver.dto.response.DebateCommentResponse;
 import com.newsnack.www.newsnackserver.dto.response.DebateIndividualResponse;
 import com.newsnack.www.newsnackserver.dto.response.DebateMainPageResponse;
 import com.newsnack.www.newsnackserver.service.DebateParticipationService;
@@ -51,5 +52,11 @@ public class DebateController {
     public NewSnackResponse<?> createDebateComment(@PathVariable Long debateId, @MemberId Long memberId, @RequestBody @Valid DebateParticipationRequest request) {
         debateParticipationService.participateDebate(debateId, memberId, request.content());
         return NewSnackResponse.success(DebateParticipationSuccessCode.DEBATE_PARTICIPATION_SUCCESS);
+    }
+
+    @GetMapping("/{debateId}/comments")
+    public NewSnackResponse<List<DebateCommentResponse>> getDebateComments(@PathVariable Long debateId, @MemberId(isForSecuredApi = false) Long memberId,
+                                                                           @RequestParam SearchOrder order) {
+        return NewSnackResponse.success(DebateSuccessCode.GET_DEBATES_SUCCESS, debateParticipationService.getDebateComments(debateId, memberId, order));
     }
 }
