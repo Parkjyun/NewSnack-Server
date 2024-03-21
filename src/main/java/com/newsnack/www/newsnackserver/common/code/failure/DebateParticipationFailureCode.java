@@ -6,19 +6,18 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum DebateFailureCode implements FailureCode {
-
+public enum DebateParticipationFailureCode implements FailureCode {
     /**
      * 404 Not Found
      */
-    DEBATE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 토론입니다."),
-
+    NOT_PARTICIPATED_DEBATE(HttpStatus.NOT_FOUND,"투표를 먼저 하셔야 합니다"),
+    NOT_FOUND_DEBATE(HttpStatus.NOT_FOUND, "토론이 없습니다"),
     /**
      * 409 Conflict
      */
-    ALREADY_VOTED_DEBATE(HttpStatus.NOT_FOUND, "이미 투표햤습니다");
+    ALREADY_COMMENTED_DEBATE(HttpStatus.CONFLICT,"이미 작성한 댓글입니다");
+
 
     private final HttpStatus httpStatus;
     private final String message;
-
 }

@@ -17,8 +17,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -44,6 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers("/v1/articles/{articleId}", "/v1/articles", "/v1/articles/main").permitAll()
                                 .requestMatchers("v1/debates/{debateId}", "/v1/debates", "/v1/debates/main").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/v1/articles/{articleId}/comments").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/v1/debates/{debateId}/comments").permitAll()
                                 .anyRequest().authenticated())//인증 필요
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
