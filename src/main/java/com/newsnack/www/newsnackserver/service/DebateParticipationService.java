@@ -1,27 +1,20 @@
 package com.newsnack.www.newsnackserver.service;
 
-import com.newsnack.www.newsnackserver.annotation.MemberId;
 import com.newsnack.www.newsnackserver.common.code.failure.DebateParticipationFailureCode;
 import com.newsnack.www.newsnackserver.common.exception.DebateParticipationException;
 import com.newsnack.www.newsnackserver.controller.parameter.SearchOrder;
-import com.newsnack.www.newsnackserver.domain.comment.model.Comment;
 import com.newsnack.www.newsnackserver.domain.debate.model.Debate;
 import com.newsnack.www.newsnackserver.domain.debate.repository.DebateJpaRepository;
 import com.newsnack.www.newsnackserver.domain.debateparticipation.model.DebateParticipation;
 import com.newsnack.www.newsnackserver.domain.debateparticipation.repository.DebateParticipationJpaRepository;
 import com.newsnack.www.newsnackserver.domain.member.model.Member;
 import com.newsnack.www.newsnackserver.domain.member.repository.MemberJpaRepository;
-import com.newsnack.www.newsnackserver.dto.response.CommentResponse;
 import com.newsnack.www.newsnackserver.dto.response.DebateCommentResponse;
-import com.newsnack.www.newsnackserver.dto.response.DebateIndividualResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-
-import static java.util.Arrays.stream;
 
 @Transactional(readOnly = true)
 @Service

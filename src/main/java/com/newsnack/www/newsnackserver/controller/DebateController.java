@@ -13,7 +13,6 @@ import com.newsnack.www.newsnackserver.dto.response.DebateMainPageResponse;
 import com.newsnack.www.newsnackserver.service.DebateParticipationService;
 import com.newsnack.www.newsnackserver.service.DebateService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
