@@ -3,8 +3,6 @@ package com.newsnack.www.newsnackserver.dto.response;
 import com.newsnack.www.newsnackserver.domain.article.model.SectionCategory;
 import com.newsnack.www.newsnackserver.domain.debate.model.Debate;
 
-import java.time.LocalDateTime;
-
 public record DebateIndividualResponse (long debateId, String title, String content, Boolean vote, int agreeCount, int disagreeCount, long articleId, String imageUrl,
                                         String articleTitle, SectionCategory sectionCategory, String articleCreatedAt) {
     public static DebateIndividualResponse of(Debate debate, Boolean vote) {
